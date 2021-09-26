@@ -2,7 +2,12 @@
   <q-page class="homebg flex flex-center">
     <div class="usernamebg row" style="">
       <div class="col-8">
-        <q-input outlined v-model="username" label="Your username" />
+        <q-input
+          @keydown.enter.prevent="setUser"
+          outlined
+          v-model="username"
+          label="Your username"
+        />
       </div>
       <div class="col-4">
         <div class="">
@@ -10,7 +15,7 @@
             large
             class="enterButton"
             :to="'chatroom'"
-            @click="setUser()"
+            @click="setUser"
             label="Enter"
             :ripple="{ color: 'yellow' }"
           />
@@ -35,11 +40,13 @@ export default defineComponent({
 import { ref, defineComponent } from "vue";
 import { mapMutations } from "vuex";
 import store from "../store";
+import router from "../router";
 
 let username = ref("");
 function setUser() {
   store.commit("setUserName", username.value);
   console.log(store.state.username);
+  router.push("/chatroom");
 }
 </script>
 <style lang="sass">
