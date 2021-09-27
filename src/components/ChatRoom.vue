@@ -15,7 +15,7 @@
       </q-scroll-area>
     </div>
     <div class="row absolute-bottom">
-      <div class="col-10" style="padding: 5px">
+      <div class="col-10" style="padding: 10px">
         <q-input
           outlined
           @keydown.enter.prevent="sendMessage"
@@ -30,7 +30,7 @@
           @click="sendMessage"
           icon="send"
           size="large"
-          style="margin-top: 0.5em"
+          style="margin-top: 0.8em"
         />
       </div>
     </div>
@@ -82,22 +82,31 @@ function scroll() {
 <style lang="sass">
 .homebg
   padding: 20px
-  //background: rgb(255, 227, 227)
-  //background: radial-gradient(circle, rgba(231, 224, 201,0.7) -55%, rgba(17, 50, 77,0.8127626050420168) 220%, rgba(17, 50, 77,0.8) 100%)
-  background: linear-gradient(-45deg, #E7E0C9, #C1CFC0, #6B7AA1, #11324D)
+  //background: #A9B4C2
+  //background: radial-gradient(circle, rgba(231, 224, 201,0.7) -55%, rgba(17, 50, 77,0.8127626050420168) 100%, rgba(17, 50, 77,0.8) 100%)
+  background: linear-gradient(-45deg, #7D98A1, #A9B4C2, #7D98A1, #EEF1EF)
   background-size: 400% 400%
-  animation: gradient 25s ease infinite
+  animation: gradient 35s ease infinite
 .q-message-sent .q-message-text
-  color: #11324D
-.q-message-sent
-  color: black
+  color: #5E6572
+.q-message-received
+  color: #211
+
+.q-field--outlined:hover .q-field__control:after
+  border-color: #1C2321
+
+.q-if-label
+  color: #FFF
+
+.q-input::before
+  border-color: #FFF
 
 @keyframes gradient
   0%
     background-position: 0% 50%
 
   50%
-    background-position: 100% 50%
+    background-position: 100% 100%
 
   100%
     background-position: 0% 50%

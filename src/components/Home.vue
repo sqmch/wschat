@@ -61,7 +61,7 @@ function setUser() {
 .enterButton
   margin-left: 1.5em
   margin-top: 0.5em
-  background: #6B7AA1
+  background: #1C2321
   color: #FFE3E3
   font-size: 1.1em
   letter-spacing: 0.1rem

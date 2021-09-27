@@ -1,6 +1,5 @@
 from typing import List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
@@ -28,12 +27,12 @@ manager = ConnectionManager()
 @app.websocket("/ws/{username}")
 async def websocket_endpoint(websocket: WebSocket, username: str):
     await manager.connect(websocket)
+    await manager.broadcast(f"{username}:<< {username} joined the chat >>")
     try:
         while True:
             data = await websocket.receive_text()
-            #await manager.send_personal_message(f"You wrote: {data}", websocket)
             await manager.broadcast(f"{username}:{data}")
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.broadcast(f"{username}:<< User left the chat >>")
+        await manager.broadcast(f"{username}:<< {username} left the chat >>")
