@@ -27,7 +27,7 @@ manager = ConnectionManager()
 @app.websocket("/ws/{username}")
 async def websocket_endpoint(websocket: WebSocket, username: str):
     await manager.connect(websocket)
-    await manager.broadcast(f"{username}:<< {username} joined the chat >>")
+    await manager.broadcast(f"{username}:<< {username} joined the chat ({len(manager.active_connections)} users in chat) >>")
     try:
         while True:
             data = await websocket.receive_text()

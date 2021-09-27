@@ -88,9 +88,9 @@ function scroll() {
   background-size: 400% 400%
   animation: gradient 35s ease infinite
 .q-message-sent .q-message-text
+  color: #1C2321
+.q-message-received .q-message-text
   color: #5E6572
-.q-message-received
-  color: #211
 
 .q-field--outlined:hover .q-field__control:after
   border-color: #1C2321

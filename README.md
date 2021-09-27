@@ -1,4 +1,6 @@
-# chatapp
+# wschat
+
+A socket based public chat app built with Vue.js/Quasar and python/FastAPI. The user simply picks an username and joins a chatroom.
 
 ## Project setup
 ```
@@ -9,16 +11,3 @@ npm install
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
