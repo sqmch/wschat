@@ -76,7 +76,6 @@ const ws = new WebSocket(
 
 ws.onmessage = function (event) {
   const isMe = event.data.split(":")[0] === username;
-  //channels.value = event.data.split("{")[1].substr(0, -1);
   messages.value.push({
     user: event.data.split(":")[0],
     msg: event.data.split(":")[1],
@@ -114,9 +113,6 @@ function onChannelSelect(channel) {
   }
   store.state.channel = channel;
   router.push("/");
-
-  //router.push("/chatroom");
-  console.log("Channel sent from dropdown: ", channel);
 }
 </script>
 <style lang="sass">

@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <router-view :key="chan" />
+    <router-view />
   </q-layout>
 </template>
 
