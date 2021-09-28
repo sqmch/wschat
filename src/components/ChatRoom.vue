@@ -29,7 +29,7 @@
             <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
             <q-btn flat to="/" dense size="large" icon="arrow_left" />
 
-            <q-toolbar-title></q-toolbar-title>
+            <q-toolbar-title>{{ store.state.channel }}</q-toolbar-title>
             <q-btn-dropdown stretch flat label="Channels">
               <q-list style="background: #eef1ef">
                 <q-item
@@ -48,7 +48,7 @@
           </q-toolbar>
 
           <div>
-            <q-scroll-area ref="chatScroll" style="width: 100%; height: 85vh">
+            <q-scroll-area ref="chatScroll" style="width: 100%; height: 82vh">
               <div class="row" v-for="message in messages" :key="message">
                 <q-chat-message
                   :sent="message.isMe"
