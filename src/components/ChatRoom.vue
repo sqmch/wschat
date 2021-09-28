@@ -85,34 +85,14 @@ function sayMsg() {
 }
 </script>
 <style lang="sass">
-.homebg
-  padding: 20px
-  //background: #A9B4C2
-  //background: radial-gradient(circle, rgba(231, 224, 201,0.7) -55%, rgba(17, 50, 77,0.8127626050420168) 100%, rgba(17, 50, 77,0.8) 100%)
-  background: linear-gradient(-45deg, #7D98A1, #A9B4C2, #7D98A1, #EEF1EF)
-  background-size: 400% 400%
-  animation: gradient 35s ease infinite
 .q-message-sent .q-message-text
   color: #1C2321
 .q-message-received .q-message-text
   color: #5E6572
-
 .q-field--outlined:hover .q-field__control:after
   border-color: #1C2321
-
 .q-if-label
   color: #FFF
-
 .q-input::before
   border-color: #FFF
-
-@keyframes gradient
-  0%
-    background-position: 0% 50%
-
-  50%
-    background-position: 100% 100%
-
-  100%
-    background-position: 0% 50%
 </style>

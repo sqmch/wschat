@@ -18,10 +18,10 @@
       </div>
 
       <div class="userinput col-md-4 col-xs-12">
-        <div>
+        <div class="row">
           <q-btn
             large
-            class="enterButton"
+            class="col enterButton"
             :to="'chatroom'"
             @click="setUser"
             label="Enter"
@@ -64,21 +64,14 @@ function setUser() {
 }
 </script>
 <style lang="sass">
-.homebg
-  background: rgb(255, 227, 227)
-  background: radial-gradient(circle, rgba(231, 224, 201,0.8239670868347339) -25%, rgba(17, 50, 77,0.8127626050420168) 150%, rgba(17, 50, 77,0.8) 100%)
-
-.usernamebg
-  padding: 25px
-  width: 25em
-
 .enterButton
   margin-left: 0em
-  margin-top: 0.55em
+  margin-top: 0.2em
   background: #1C2321
-  color: #FFE3E3
+  color: #EEF1EF
   font-size: 1.1em
   letter-spacing: 0.1rem
+  height: 3.3em
 
 .userinput
   padding: 10px
