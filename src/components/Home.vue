@@ -1,16 +1,24 @@
 <template>
   <q-page class="homebg flex flex-center">
-    <div class="usernamebg row" style="">
-      <div class="col-8">
-        <q-input
-          @keydown.enter.prevent="setUser"
-          outlined
-          v-model="username"
-          label="Your username"
-        />
+    <div class="row" style="">
+      <div class="col-4">
+        <div class="userinput">
+          <q-input outlined v-model="channel" label="Your channel" />
+        </div>
       </div>
       <div class="col-4">
-        <div class="">
+        <div class="userinput">
+          <q-input
+            @keydown.enter.prevent="setUser"
+            outlined
+            v-model="username"
+            label="Your username"
+          />
+        </div>
+      </div>
+
+      <div class="userinput col-4">
+        <div>
           <q-btn
             large
             class="enterButton"
@@ -30,7 +38,8 @@ export default defineComponent({
   name: "ChatRoom",
   methods: {
     ...mapMutations([
-      "setUserName", // map `this.increment()` to `this.$store.commit('increment')`'incrementBy' // map `this.incrementBy(amount)` to `this.$store.commit('incrementBy', amount)`
+      "setUserName",
+      "setChannel", // map `this.increment()` to `this.$store.commit('increment')`'incrementBy' // map `this.incrementBy(amount)` to `this.$store.commit('incrementBy', amount)`
     ]),
   },
 });
@@ -43,8 +52,13 @@ import store from "../store";
 import router from "../router";
 
 let username = ref("");
+let channel = ref("general");
+
 function setUser() {
   store.commit("setUserName", username.value);
+  if (channel.value !== "") {
+    store.commit("setChannel", channel.value);
+  }
   console.log(store.state.username);
   router.push("/chatroom");
 }
@@ -59,10 +73,13 @@ function setUser() {
   width: 25em
 
 .enterButton
-  margin-left: 1.5em
-  margin-top: 0.5em
+  margin-left: 0em
+  margin-top: 0.55em
   background: #1C2321
   color: #FFE3E3
   font-size: 1.1em
   letter-spacing: 0.1rem
+
+.userinput
+  padding: 20px
 </style>

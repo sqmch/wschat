@@ -20,7 +20,7 @@
           outlined
           @keydown.enter.prevent="sendMessage"
           v-model="message_text"
-          label="Say something..."
+          :label="sayMsg()"
           clearable
           clear-icon="close"
         />
@@ -51,7 +51,9 @@ const chatScroll = ref(null);
 const messages = ref([]);
 let message_text = ref("");
 const username = store.state.username;
-const ws = new WebSocket(`ws://localhost:8000/ws/${store.state.username}`);
+const ws = new WebSocket(
+  `ws://localhost:8000/ws/${store.state.channel}/${store.state.username}`
+);
 
 ws.onmessage = function (event) {
   const isMe = event.data.split(":")[0] === username;
@@ -77,6 +79,9 @@ function scroll() {
   const scrollTarget = scrollArea.getScrollTarget();
   const duration = 300; //ms
   scrollArea.setScrollPosition("vertical", scrollTarget.scrollHeight, duration);
+}
+function sayMsg() {
+  return "Say something in #" + store.state.channel + "...";
 }
 </script>
 <style lang="sass">

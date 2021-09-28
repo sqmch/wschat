@@ -1,38 +1,46 @@
 from typing import List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
+from broadcaster import Broadcast
+
+broadcast = Broadcast("postgresql://postgres@localhost/test")
+
 app = FastAPI()
 
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self, websocket: WebSocket, channel: str):
         await websocket.accept()
-        self.active_connections.append(websocket)
+        self.active_connections.append({"channel": channel, "ws": websocket})
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
+    def disconnect(self, channel: str, websocket: WebSocket):
+        for connection in self.active_connections:
+            if connection["ws"] == websocket:
+               self.active_connections.remove(connection)
 
     async def send_personal_message(self, message: str, websocket: WebSocket):
         await websocket.send_text(message)
 
-    async def broadcast(self, message: str):
+    async def broadcast(self, channel: str, message: str):
         for connection in self.active_connections:
-            await connection.send_text(message)
+            if connection["channel"] == channel:
+                await connection["ws"].send_text(message)
 
 
 manager = ConnectionManager()
 
-@app.websocket("/ws/{username}")
-async def websocket_endpoint(websocket: WebSocket, username: str):
-    await manager.connect(websocket)
-    await manager.broadcast(f"{username}:<< {username} joined the chat ({len(manager.active_connections)} users in chat) >>")
+@app.websocket("/ws/{channel}/{username}")
+async def websocket_endpoint(websocket: WebSocket, channel: str, username: str):
+    await manager.connect(websocket, channel)
+    await manager.broadcast(channel, f"{username}:<< {username} joined {channel} >>")
+
     try:
         while True:
             data = await websocket.receive_text()
-            await manager.broadcast(f"{username}:{data}")
+            await manager.broadcast(channel,f"{username}:{data}")
 
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        await manager.broadcast(f"{username}:<< {username} left the chat >>")
+        await manager.broadcast(channel, f"{username}:<< {username} has left {channel}  >>")
+        manager.disconnect(channel, websocket)
