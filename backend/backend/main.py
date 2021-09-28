@@ -7,7 +7,7 @@ app = FastAPI()
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
-        self.channels: List[str] = []
+        self.channels: List[str] = ["general"]
 
 
     async def connect(self, websocket: WebSocket, channel: str):
@@ -35,7 +35,7 @@ manager = ConnectionManager()
 @app.websocket("/ws/{channel}/{username}")
 async def websocket_endpoint(websocket: WebSocket, channel: str, username: str):
     await manager.connect(websocket, channel)
-    await manager.broadcast(channel, f"{username}:<< {username} joined {channel} >>")
+    await manager.broadcast(channel, f"{username}:[SERVER] {username} joined #{channel}")
 
     try:
         while True:

@@ -4,21 +4,22 @@
       <q-drawer v-model="drawer" :width="200" :breakpoint="500" class="drawer">
         <q-scroll-area class="fit">
           <q-list>
-            <template v-for="(menuItem, index) in menuList" :key="index">
+            <template v-for="channel in channels.channels" :key="channel">
               <q-item
                 clickable
                 dark
-                :active="menuItem.label === 'Outbox'"
+                :active="true"
                 v-ripple
+                @click="onChannelSelect(channel)"
               >
                 <q-item-section avatar>
-                  <q-icon :name="menuItem.icon" />
+                  <q-icon style="color: white" name="arrow_right" />
                 </q-item-section>
-                <q-item-section>
-                  {{ menuItem.label }}
+                <q-item-section style="color: #eef1ef">
+                  {{ channel }}
                 </q-item-section>
               </q-item>
-              <q-separator :key="'sep' + index" v-if="menuItem.separator" />
+              <q-separator :key="'sep' + index" v-if="channel.separator" />
             </template>
           </q-list>
         </q-scroll-area>
@@ -26,12 +27,28 @@
       <q-page-container>
         <q-page class="homebg">
           <q-toolbar class="toolbar">
-            <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-            <q-btn flat to="/" dense size="large" icon="arrow_left" />
+            <q-btn
+              flat
+              @click="drawer = !drawer"
+              round
+              dense
+              size="medium"
+              icon="menu"
+              style="margin-right: 10px"
+            />
+            <q-btn
+              flat
+              to="/"
+              round
+              dense
+              size="large"
+              icon="arrow_left"
+              style="margin-right: 10px"
+            />
 
-            <q-toolbar-title>{{ store.state.channel }}</q-toolbar-title>
+            <q-toolbar-title>#{{ store.state.channel }}</q-toolbar-title>
             <q-btn-dropdown stretch flat label="Channels">
-              <q-list style="background: #eef1ef">
+              <q-list style="background: #1c2321; color: #eef1ef">
                 <q-item
                   v-for="channel in channels.channels"
                   :key="channel"
@@ -90,6 +107,9 @@
 <script>
 export default defineComponent({
   name: "ChatRoom",
+  mounted() {
+    // 1
+  },
 });
 </script>
 
@@ -98,36 +118,27 @@ import { ref, defineComponent } from "vue";
 import store from "../store";
 import router from "../router";
 
-const menuList = [
-  {
-    icon: "settings",
-    label: "Settings",
-    separator: false,
-  },
-  {
-    icon: "help",
-    iconColor: "primary",
-    label: "About",
-    separator: false,
-  },
-];
 const drawer = ref();
 const chatScroll = ref(null);
 const messages = ref([]);
-const channels = ref(store.state.channels);
+const channels = ref(["general"]);
 let message_text = ref("");
 const username = store.state.username;
 const ws = new WebSocket(
   `ws://localhost:8000/ws/${store.state.channel}/${store.state.username}`
 );
+ws.onopen = () => ws.send("wsconnected");
 
 ws.onmessage = function (event) {
   const isMe = event.data.split(":")[0] === username;
-  messages.value.push({
-    user: event.data.split(":")[0],
-    msg: event.data.split(":")[1],
-    isMe: isMe,
-  });
+  if (event.data.split(":")[1] !== "wsconnected") {
+    messages.value.push({
+      user: event.data.split(":")[0],
+      msg: event.data.split(":")[1],
+      isMe: isMe,
+    });
+  }
+
   const channelsraw = '{"channels":' + event.data.split(":")[2] + "}";
   channels.value = JSON.parse(channelsraw.replaceAll("'", '"'));
   store.state.channels = channels.value;
