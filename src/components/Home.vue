@@ -21,6 +21,7 @@
         <div class="row">
           <q-btn
             large
+            outline
             class="col enterButton"
             :to="'chatroom'"
             @click="setUser"
@@ -51,7 +52,7 @@ import { mapMutations } from "vuex";
 import store from "../store";
 import router from "../router";
 
-let username = ref("");
+let username = ref(store.state.username);
 let channel = ref(store.state.channel);
 
 function setUser() {
@@ -66,12 +67,12 @@ function setUser() {
 <style lang="sass">
 .enterButton
   margin-left: 0em
-  margin-top: 0.2em
-  background: #1C2321
-  color: #EEF1EF
+  margin-top: 0em
+  background: #1C232150
+  color: #1C2321 //#EEF1EF
   font-size: 1.1em
   letter-spacing: 0.1rem
-  height: 3.3em
+  height: 3.6em
 
 .userinput
   padding: 10px
