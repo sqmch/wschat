@@ -1,9 +1,6 @@
 from typing import List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
-from broadcaster import Broadcast
-
-broadcast = Broadcast("postgresql://postgres@localhost/test")
 
 app = FastAPI()
 
