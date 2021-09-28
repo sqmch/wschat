@@ -17,6 +17,7 @@ class ConnectionManager:
             if connection["ws"] == websocket:
                self.active_connections.remove(connection)
 
+
     async def send_personal_message(self, message: str, websocket: WebSocket):
         await websocket.send_text(message)
 

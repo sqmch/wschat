@@ -1,12 +1,12 @@
 <template>
   <q-page class="homebg flex flex-center">
     <div class="row" style="">
-      <div class="col-4">
+      <div class="col-md-4 col-xs-12">
         <div class="userinput">
           <q-input outlined v-model="channel" label="Your channel" />
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-md-4 col-xs-12">
         <div class="userinput">
           <q-input
             @keydown.enter.prevent="setUser"
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <div class="userinput col-4">
+      <div class="userinput col-md-4 col-xs-12">
         <div>
           <q-btn
             large
@@ -81,5 +81,5 @@ function setUser() {
   letter-spacing: 0.1rem
 
 .userinput
-  padding: 20px
+  padding: 10px
 </style>
