@@ -1,11 +1,12 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <router-view />
+    <router-view :key="chan" />
   </q-layout>
 </template>
 
 <script>
 import { ref } from "vue";
+import store from "./store";
 
 export default {
   name: "LayoutDefault",
@@ -14,16 +15,18 @@ export default {
 
   setup() {
     const client_id = Date.now();
+    const chan = store.state.channel;
     return {
       leftDrawerOpen: ref(false),
       client_id,
+      chan,
     };
   },
 };
 </script>
 <style lang="sass">
 .homebg
-  padding: 20px
+  padding: 15px
   //background: #A9B4C2
   //background: radial-gradient(circle, rgba(231, 224, 201,0.7) -55%, rgba(17, 50, 77,0.8127626050420168) 100%, rgba(17, 50, 77,0.8) 100%)
   background: linear-gradient(-45deg, #7D98A1, #A9B4C2, #7D98A1, #EEF1EF)

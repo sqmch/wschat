@@ -7,10 +7,14 @@ app = FastAPI()
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
+        self.channels: List[str] = []
+
 
     async def connect(self, websocket: WebSocket, channel: str):
         await websocket.accept()
         self.active_connections.append({"channel": channel, "ws": websocket})
+        if channel not in self.channels:
+            self.channels.append(channel)
 
     def disconnect(self,  websocket: WebSocket):
         for connection in self.active_connections:
@@ -36,7 +40,7 @@ async def websocket_endpoint(websocket: WebSocket, channel: str, username: str):
     try:
         while True:
             data = await websocket.receive_text()
-            await manager.broadcast(channel,f"{username}:{data}")
+            await manager.broadcast(channel,f"{username}:{data}:{manager.channels}")
 
     except WebSocketDisconnect:
         manager.disconnect( websocket)

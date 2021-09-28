@@ -52,7 +52,7 @@ import store from "../store";
 import router from "../router";
 
 let username = ref("");
-let channel = ref("general");
+let channel = ref(store.state.channel);
 
 function setUser() {
   store.commit("setUserName", username.value);

@@ -3,24 +3,16 @@
     <q-toolbar class="toolbar">
       <q-toolbar-title></q-toolbar-title>
       <q-btn-dropdown stretch flat label="Channels">
-        <q-list>
-          <q-item-label header>Folders</q-item-label>
+        <q-list style="background: #eef1ef">
           <q-item
-            v-for="n in 3"
-            :key="`x.${n}`"
+            v-for="channel in channels.channels"
+            :key="channel"
             clickable
             v-close-popup
-            tabindex="0"
+            @click="onChannelSelect(channel)"
           >
-            <q-item-section avatar>
-              <q-avatar icon="folder" color="secondary" text-color="white" />
-            </q-item-section>
             <q-item-section>
-              <q-item-label>Photos</q-item-label>
-              <q-item-label caption>February 22, 2016</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-icon name="info" />
+              <q-item-label>{{ channel }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -71,9 +63,11 @@ export default defineComponent({
 <script setup>
 import { ref, defineComponent } from "vue";
 import store from "../store";
+import router from "../router";
 
 const chatScroll = ref(null);
 const messages = ref([]);
+const channels = ref(store.state.channels);
 let message_text = ref("");
 const username = store.state.username;
 const ws = new WebSocket(
@@ -82,11 +76,16 @@ const ws = new WebSocket(
 
 ws.onmessage = function (event) {
   const isMe = event.data.split(":")[0] === username;
+  //channels.value = event.data.split("{")[1].substr(0, -1);
   messages.value.push({
     user: event.data.split(":")[0],
     msg: event.data.split(":")[1],
     isMe: isMe,
   });
+  const channelsraw = '{"channels":' + event.data.split(":")[2] + "}";
+  channels.value = JSON.parse(channelsraw.replaceAll("'", '"'));
+  store.state.channels = channels.value;
+  console.log(channels.value);
   scroll();
 };
 function sendMessage() {
@@ -107,6 +106,17 @@ function scroll() {
 }
 function sayMsg() {
   return "Say something in #" + store.state.channel + "...";
+}
+
+function onChannelSelect(channel) {
+  if (channel !== "") {
+    store.commit("setChannel", channel);
+  }
+  store.state.channel = channel;
+  router.push("/");
+
+  //router.push("/chatroom");
+  console.log("Channel sent from dropdown: ", channel);
 }
 </script>
 <style lang="sass">
