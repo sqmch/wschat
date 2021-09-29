@@ -130,7 +130,7 @@ const channels = ref(["general"]);
 let message_text = ref("");
 const username = store.state.username;
 const ws = new WebSocket(
-  `ws://localhost:8000/ws/${store.state.channel}/${store.state.username}`
+  `wss://wschat1.herokuapp.com/ws/${store.state.channel}/${store.state.username}`
 );
 ws.onopen = () => ws.send("wsconnected");
 ws.onclose = () => ws.send("wsclosed");
