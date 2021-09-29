@@ -6,6 +6,7 @@
           <q-list>
             <template v-for="channel in channels.channels" :key="channel">
               <q-item
+                style="letter-spacing: 0.1rem"
                 clickable
                 dark
                 :active="true"
@@ -43,13 +44,17 @@
               dense
               size="large"
               icon="arrow_left"
-              style="margin-right: 10px"
+              style="margin-right: 0px"
             />
 
-            <q-toolbar-title>#{{ store.state.channel }}</q-toolbar-title>
-            <q-btn-dropdown stretch flat label="Channels">
+            <q-toolbar-title
+              style="padding-bottom: 0.15em; letter-spacing: 0.1rem"
+              >#{{ store.state.channel }}</q-toolbar-title
+            >
+            <!--<q-btn-dropdown stretch flat label="Channels">
               <q-list style="background: #1c2321; color: #eef1ef">
                 <q-item
+                  style="letter-spacing: 0.1rem"
                   v-for="channel in channels.channels"
                   :key="channel"
                   clickable
@@ -61,18 +66,18 @@
                   </q-item-section>
                 </q-item>
               </q-list>
-            </q-btn-dropdown>
+            </q-btn-dropdown>-->
           </q-toolbar>
 
           <div>
-            <q-scroll-area ref="chatScroll" style="width: 100%; height: 82vh">
+            <q-scroll-area ref="chatScroll" style="width: 100%; height: 78vh">
               <div class="row" v-for="message in messages" :key="message">
                 <q-chat-message
                   :sent="message.isMe"
                   :name="message.user"
                   text-color="white"
                 >
-                  <div>{{ message.msg }}</div>
+                  <div class="text-body1">{{ message.msg }}</div>
                 </q-chat-message>
               </div>
             </q-scroll-area>
@@ -128,6 +133,7 @@ const ws = new WebSocket(
   `ws://localhost:8000/ws/${store.state.channel}/${store.state.username}`
 );
 ws.onopen = () => ws.send("wsconnected");
+ws.onclose = () => ws.send("wsclosed");
 
 ws.onmessage = function (event) {
   const isMe = event.data.split(":")[0] === username;
@@ -137,6 +143,7 @@ ws.onmessage = function (event) {
       msg: event.data.split(":")[1],
       isMe: isMe,
     });
+    scroll();
   }
 
   const channelsraw = '{"channels":' + event.data.split(":")[2] + "}";

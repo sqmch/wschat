@@ -35,7 +35,7 @@ manager = ConnectionManager()
 @app.websocket("/ws/{channel}/{username}")
 async def websocket_endpoint(websocket: WebSocket, channel: str, username: str):
     await manager.connect(websocket, channel)
-    await manager.broadcast(channel, f"{username}:[SERVER] {username} joined #{channel}")
+    await manager.broadcast(channel, f":[server] {username} has joined the channel")
 
     try:
         while True:
@@ -44,4 +44,4 @@ async def websocket_endpoint(websocket: WebSocket, channel: str, username: str):
 
     except WebSocketDisconnect:
         manager.disconnect( websocket)
-        await manager.broadcast(channel, f"{username}:<< {username} has left {channel}  >>")
+        await manager.broadcast(channel, f":[server] {username} has left the channel")
